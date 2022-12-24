@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserMapper">
+	<select id="list" resultType="com.example.domain.UserVO">
+		select tbl_user.*, 
+		(select count(*) from tbl_message where receiver=uid) receivecnt,
+		(select count(*) from tbl_message where sender=uid) sendcnt
+		from tbl_user
+		order by receivecnt desc, sendcnt desc
+		limit 0,10 
+	</select>
+	<select id="read" resultType="com.example.domain.UserVO">
+	select tbl_user.*, 
+	(select count(*) from tbl_message where receiver=uid) receivecnt,
+	(select count(*) from tbl_message where sender=uid) sendcnt
+	from tbl_user
+	where uid=#{uid}
+	</select>
+	<update id="updatePoint">
+		update tbl_user set point = point +#{amount} where uid=#{uid}
+	</update>
+	
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.BoardMapper">
+
+<delete id="delete">
+ 	 	delete from tbl_board where bno=#{bno}
+</delete>
+
+	<select id="read" resultType="com.example.domain.BoardVO">
+		select tbl_board.*, uname from tbl_board, tbl_user  where writer=uid and bno=#{bno} 
+	</select>
+	
+	<update id="update">
+		update tbl_board set title=#{title}, content=#{content},  updatedate=now() where bno=#{bno}
+	</update>
+
+
+
+	<select id="list" resultType="com.example.domain.BoardVO">
+		select tbl_board.*, uname from tbl_board, tbl_user  where writer=uid and (title like concat('%', '${word}' ,'%') or content like concat('%','${word}','%') or writer like concat('%','${word}','%')) 
+		order by bno desc limit #{start},5
+	</select>
+ 	
+ 	 <select id="total" resultType="int">
+	 	select count(*) from tbl_board where title like concat('%',#{word},'%') or content like concat('%',#{word},'%')
+	 	or writer like concat('%',#{word},'%')
+ 	 </select>
+	
+	<insert id="insert">
+		insert into tbl_board(title,writer,content) values(#{title},#{writer},#{content})
+	</insert>
+
+</mapper>

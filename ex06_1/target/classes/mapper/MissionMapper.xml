@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MissionMapper">
+	 <select id="list" resultType="com.example.domain.MissionVO">
+	 	select * from mission_table
+		 <if test="m_keyword != null">
+		 where m_title like concat('%',#{m_keyword},'%') or m_content like concat('%',#{m_keyword},'%')
+		 </if>
+		 order by mission_code desc
+		 limit #{m_start}, #{m_number}
+	 	
+ 	 </select>
+ 	 <select id="read" resultType="com.example.domain.MissionVO">
+	 	select * from mission_table where mission_code =#{mission_code}
+ 	 </select>
+ 	
+ 	 <insert id="insert">
+ 	 	insert into mission_table 
+ 	 	(m_start_Date,m_last_Date,m_category,m_image,m_title,m_info,m_content,m_content_image,m_target,m_result,m_get_point)
+ 	 	value
+ 	 	(#{m_start_Date},#{m_last_Date},#{m_category},#{m_image},#{m_title},#{m_info},#{m_content},#{m_content_image},#{m_target},#{m_result},#{m_get_point})
+ 	 </insert>
+ 	 <update id="update">
+ 	 	update mission_table 
+ 	 	set
+ 	 		m_start_Date=#{m_start_Date},m_last_Date=#{m_last_Date},
+ 	 		m_category=#{m_category},m_image=#{m_image},m_title=#{m_title},
+ 	 		m_info=#{m_info},m_content=#{m_content},m_content_image=#{m_content_image},
+ 	 		m_target=#{m_target},m_result=#{m_result},m_get_point=#{m_get_point}) where mission_code=#{mission_code}
+ 	 	
+ 	 </update>
+ 	 <delete id="delete">
+ 	 	delete from mission_table where mission_code=#{mission_code} 
+ 	 </delete>
+ 	 
+</mapper>
